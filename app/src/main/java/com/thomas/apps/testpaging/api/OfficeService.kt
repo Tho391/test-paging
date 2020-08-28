@@ -5,15 +5,17 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface OfficeService {
 
+    @Headers("X-API-Key: 2fbbbb10")
     @GET("offices")
     suspend fun requestOffice(
         @Query("page") page: Int,
         @Query("size") size: Int
-    ): OfficeResponse
+    ): List<OfficeResponseItem>
 
     companion object {
         private const val URL = "https://my.api.mockaroo.com/"
@@ -21,7 +23,10 @@ interface OfficeService {
         private val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-        private val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(logging).build()
+        private val client: OkHttpClient =
+            OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build()
 
         fun create(): OfficeService {
             val retrofit = Retrofit.Builder()

@@ -1,10 +1,12 @@
 package com.thomas.apps.testpaging.db
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.thomas.apps.testpaging.model.Office
 
 @Entity(tableName = "office")
 data class OfficeEntity(
+    @PrimaryKey
     val id: Long,
     val address: String,
     val city: String,

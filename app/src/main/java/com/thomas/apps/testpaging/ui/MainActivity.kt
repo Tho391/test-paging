@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.thomas.apps.testpaging.adapter.LoadStateAdapter
 import com.thomas.apps.testpaging.adapter.OfficeAdapter
 import com.thomas.apps.testpaging.api.OfficeService
@@ -92,6 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpRecyclerView() {
         binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
             addItemDecoration(
                 DividerItemDecoration(
                     this@MainActivity,
