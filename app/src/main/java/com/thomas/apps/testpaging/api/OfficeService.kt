@@ -10,15 +10,17 @@ import retrofit2.http.Query
 
 interface OfficeService {
 
-    @Headers("X-API-Key: 2fbbbb10")
+    //@Headers("X-API-Key: 2fbbbb10")
     @GET("offices")
     suspend fun requestOffice(
-        @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("_page") page: Int,
+//        @Query("size") size: Int
+        @Query("_limit") size: Int
     ): List<OfficeResponseItem>
 
     companion object {
         private const val URL = "https://my.api.mockaroo.com/"
+        private const val URL2 = "https://my-json-server.typicode.com/Tho391/b-map/"
 
         private val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -31,7 +33,7 @@ interface OfficeService {
         fun create(): OfficeService {
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
-                .baseUrl(URL)
+                .baseUrl(URL2)
                 .client(client)
                 .build()
 

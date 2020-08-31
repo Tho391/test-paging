@@ -11,7 +11,6 @@ import com.thomas.apps.testpaging.db.OfficeEntity
 import com.thomas.apps.testpaging.db.RemoteKeys
 import retrofit2.HttpException
 import java.io.IOException
-import java.io.InvalidObjectException
 
 @OptIn(ExperimentalPagingApi::class)
 class OfficeRemoteMediator(
@@ -19,7 +18,7 @@ class OfficeRemoteMediator(
     private val database: AppDatabase
 ) : RemoteMediator<Int, OfficeEntity>() {
     companion object {
-        private const val STARTING_PAGE_INDEX = 0
+        private const val STARTING_PAGE_INDEX = 1
     }
 
     override suspend fun load(
@@ -31,6 +30,7 @@ class OfficeRemoteMediator(
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                 remoteKeys?.nextKey?.minus(1) ?: STARTING_PAGE_INDEX
+
             }
             LoadType.PREPEND -> {
 //                val remoteKeys = getRemoteKeyForFirstItem(state)
@@ -46,13 +46,18 @@ class OfficeRemoteMediator(
 //                    return MediatorResult.Success(endOfPaginationReached = true)
 //                }
 //                remoteKeys.prevKey
-                0
+                return MediatorResult.Success(endOfPaginationReached = true)
             }
             LoadType.APPEND -> {
+//                val remoteKeys = getRemoteKeyForLastItem(state)
+//                if (remoteKeys == null || remoteKeys.nextKey == null) {
+//                    throw InvalidObjectException("Remote key should not be null for $loadType")
+//                }
+//                remoteKeys.nextKey
+
                 val remoteKeys = getRemoteKeyForLastItem(state)
-                if (remoteKeys == null || remoteKeys.nextKey == null) {
-                    throw InvalidObjectException("Remote key should not be null for $loadType")
-                }
+                remoteKeys?.nextKey ?: return MediatorResult.Success(endOfPaginationReached = true)
+
                 remoteKeys.nextKey
             }
 
